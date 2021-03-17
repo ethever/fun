@@ -1,188 +1,354 @@
 var __TENCENT_CHAOS_STACK = function () {
 
     function __TENCENT_CHAOS_VM(f, e, c, r, l, g, s, a) {
-        console.dir({
-            f,
-            e,
-            c,
-            r,
-            l,
-            g,
-            s,
-            a,
-        });
+        // console.dir({
+        //     // 0
+        //     f,
+        //     // data
+        //     e,
+        //     // Window
+        //     c,
+        //     // undefined
+        //     r,
+        //     // undefined
+        //     l,
+        //     // undefined
+        //     g,
+        //     // undefined
+        //     s,
+        //     // undefined
+        //     a, 
+        // });
         var n = !r;
+        // 栈指针
         f = +f;
+        // 数据
         e = e || [0];
+        // 栈
         r = r || [[this], [{}]];
         l = l || {};
-        var t = [],
-            o = null,
-            u = [
-                function () {
-                    console.error('func1');
-                    r[r.length - 2] = r[r.length - 2] | r.pop()
-                }, , ,
-                function () {
-                    console.error('func2');
-                    for (var o = e[f++], u = [], n = e[f++], t = e[f++], p = [], h = 0; h < n; h++)
-                        u[e[f++]] = r[e[f++]];
-                    for (h = 0; h < t; h++)
-                        p[h] = e[f++];
-                    r.push(
-                        function i() {
-                            var n = u.slice(0);
-                            n[0] = [this],
-                                n[1] = [arguments],
-                                n[2] = [i];
-                            for (var t = 0; t < p.length && t < arguments.length; t++)
-                                0 < p[t] && (n[p[t]] = [arguments[t]]);
-                            return __TENCENT_CHAOS_VM(o, e, c, n, l, g, s, a)
-                        }
-                    )
-                }, ,
-                function () {
-                    console.error('func3');
-                    r.push(undefined)
-                }, ,
-                function () {
-                    return !0
-                },
-                function () {
-                    var n = r[r.length - 2];
-                    n[0][n[1]] = r[r.length - 1]
-                },
-                function () {
-                    r.push(!r.pop())
-                }, , ,
-                function () {
-                    r.push([e[f++]])
-                },
-                function () {
-                    r[r.length - 1] = e[f++]
-                }, ,
-                function () {
-                    r[r.length - 2] = r[r.length - 2] % r.pop()
-                },
-                function () {
-                    r.push("")
-                },
-                function () {
-                    f = e[f++]
-                }, , , , , , ,
-                function () {
-                    var n = r.pop();
-                    r.push([r[r.pop()][0], n])
-                },
-                function () {
-                    var n = e[f++];
-                    r[n] = r[n] === undefined ? [] : r[n]
-                }, , , , , ,
-                function () {
-                    var n = e[f++], t = r[r.length - 2 - n];
-                    r[r.length - 2 - n] = r.pop(), r.push(t)
-                },
-                function () {
-                    var n = e[f++];
-                    r[r.length - 1] && (f = n)
-                },
-                function () {
-                    r.length = e[f++]
-                },
-                function () {
-                    r[r.length - 2] = r[r.length - 2] >= r.pop()
-                }, , ,
-                function () {
-                    r.pop()
-                }, , , ,
-                function () {
-                    r[r[r.length - 2][0]][0] = r[r.length - 1]
-                }, , ,
-                function () {
-                    r[r.length - 2] = r[r.length - 2] * r.pop()
-                },
-                function () {
-                    r.push([c, r.pop()])
-                }, , ,
-                function () {
-                    r.push(r[r.pop()[0]][0])
-                }, , , ,
-                function () {
-                    var n = e[f++], t = n ? r.slice(-n) : [];
-                    r.length -= n;
-                    var o = r.pop();
-                    r.push(o[0][o[1]].apply(o[0], t))
-                },
-                function () {
-                    r.push(r[e[f++]][0])
-                }, ,
-                function () {
-                    r.push(e[f++])
-                }, ,
-                function () {
-                    var n = r.pop();
-                    r.push(n[0][n[1]])
-                },
-                function () {
-                    r.push(r[r.length - 1])
-                }, , , , ,
-                function () {
-                    r.length -= e[f++]
-                }, ,
-                function () {
-                    var n = r.pop(), t = r.pop();
-                    r.push([t[0][t[1]], n])
-                },
-                function () {
-                    r[r.length - 2] = r[r.length - 2] + r.pop()
-                }, ,
-                function () {
-                    var _t = e[f++];
-                    var __t = String.fromCharCode(_t)
-                    r[r.length - 1] += __t;
-                    console.error({
-                        title: "String from Char Code",
-                        _t,
-                        __t,
-                    });
+        var t = [];
+        var o = null;
+        // 指令集
+        // 0 3 5 7 9 12 13 15 16 17 24 25 31 32 33 34 37 41 44
+        // 45 48 52 53 55 57 58 63 65 66 68
+        // length: 69
+        var u = [
+            // 0
+            function () {
+                console.error('func1');
+                r[r.length - 2] = r[r.length - 2] | r.pop()
+            }, , ,
+            // 3
+            // 类似重启
+            function () {
+                // 取出下一个指令 o=38
+                var o = e[f++];
+                var u = [];
+                // 取出下一个指令 n=0
+                var n = e[f++];
+                // 取出下一个指令 t=1
+                var t = e[f++];
+                var p = [];
+                console.error({
+                    title: '创建子虚拟机',
+                    o,
+                    u,
+                    n,
+                    t,
+                    p,
+                    e,
+                });
+                for (var h = 0; h < n; h++) {
+                    // 将堆栈中的值复制一份到本地
+                    u[e[f++]] = r[e[f++]];
                 }
-            ];
+                for (h = 0; h < t; h++) {
+                    p[h] = e[f++];
+                }
+                r.push(
+                    function i() {
+                        // 返回u中第一个元素 n = [];
+                        var n = u.slice(0);
+                        console.error({
+                            title: 'run i',
+                            n,
+                            u,
+                        });
+                        n[0] = [this];
+                        n[1] = [arguments];
+                        n[2] = [i];
+                        // n = [[this], [arguments], [i]];
+                        // p = [3]
+
+                        // for(var t = 0;t<1 && t< arguments.length;t++){
+                        // 0 < p[t] && (n[p[t]] = [arguments[t]]);
+                        // n[3] = [arguments[0]];
+                        // }
+                        for (var t = 0; t < p.length && t < arguments.length; t++) {
+                            0 < p[t] && (n[p[t]] = [arguments[t]]);
+                        }
+                        // 还是源数据 只不过把堆栈改了 (改了上下文) 栈指针是38
+                        // __TENCENT_CHAOS_VM(38, e, c, [[this], [arguments], [i], [arguments[0]]], l, g, s, a);
+                        return __TENCENT_CHAOS_VM(o, e, c, n, l, g, s, a)
+                    }
+                )
+            }, ,
+            // 5
+            function () {
+                console.error('准备停机');
+                r.push(undefined)
+            }, ,
+            // 7
+            function () {
+                console.error('停机');
+                return !0;
+            },
+            // 8
+            function () {
+                console.error({
+                    title: '赋值操作',
+                    length: r.length,
+                });
+                var n = r[r.length - 2];
+                n[0][n[1]] = r[r.length - 1];
+            },
+            // 9
+            function () {
+                r.push(!r.pop())
+            }, , ,
+            // 12
+            function () {
+                console.error({
+                    title: '将下一个数压栈',
+
+                });
+                var n = e[f++];
+                r.push([n]);
+            },
+            // 13
+            function () {
+                r[r.length - 1] = e[f++]
+            }, ,
+            // 15
+            function () {
+                r[r.length - 2] = r[r.length - 2] % r.pop()
+            },
+            // 16
+            function () {
+                // 压栈
+                r.push("");
+                console.error({
+                    title: '空字符串入栈',
+                });
+            },
+            // 17
+            function () {
+                f = e[f++];
+                console.error({
+                    title: '修改栈指针',
+                    f,
+                });
+            }, , , , , , ,
+            // 24
+            function () {
+                var n = r.pop();
+                r.push([r[r.pop()][0], n])
+            },
+            // 25
+            function () {
+                // 分配变量内存空间
+                var n = e[f++];
+                console.error({
+                    title: '为变量分配空间:',
+                    n,
+                });
+                r[n] = r[n] === undefined ? [] : r[n]
+            }, , , , , ,
+            // 31
+            function () {
+                var n = e[f++];
+                var t = r[r.length - 2 - n];
+                r[r.length - 2 - n] = r.pop();
+                r.push(t);
+                console.error({
+                    title: ' 交换位置, 将(function(){})放到它的引用之前',
+                    n,
+                    t,
+                    f,
+                })
+            },
+            // 32
+            function () {
+                var n = e[f++];
+                r[r.length - 1] && (f = n)
+            },
+            // 33
+            function () {
+                // 设置栈长度 下一个数据为栈长度
+                r.length = e[f++];
+                console.error({
+                    title: '设置 栈长度:',
+                    length: r.length,
+                });
+            },
+            // 34
+            function () {
+                r[r.length - 2] = r[r.length - 2] >= r.pop()
+            }, , ,
+            // 37
+            function () {
+                r.pop()
+            }, , , ,
+            // 41
+            function () {
+                r[r[r.length - 2][0]][0] = r[r.length - 1]
+            }, , ,
+            // 44
+            function () {
+                r[r.length - 2] = r[r.length - 2] * r.pop()
+            },
+            // 45
+            function () {
+                r.push([c, r.pop()]);
+                console.error({
+                    title: '类似设定变量引用',
+                    c,
+                });
+            }, , ,
+            // 48
+            function () {
+                r.push(r[r.pop()[0]][0])
+            }, , , ,
+            // 52
+            function () {
+                var n = e[f++];
+                var t = n ? r.slice(-n) : [];
+                r.length -= n;
+                var o = r.pop();
+                r.push(o[0][o[1]].apply(o[0], t))
+            },
+            // 53
+            function () {
+                r.push(r[e[f++]][0])
+            }, ,
+            // 55
+            function () {
+                console.error({
+                    title: '下一个数入栈',
+                });
+                console.dir(r.toString());
+                r.push(e[f++])
+            }, ,
+            // 57
+            function () {
+                var n = r.pop();
+                r.push(n[0][n[1]])
+            },
+            // 58
+            function () {
+                r.push(r[r.length - 1])
+            }, , , , ,
+            // 63
+            function () {
+                r.length -= e[f++]
+            }, ,
+            // 65
+            function () {
+                // 绑定上下文
+                var n = r.pop();
+                var t = r.pop();
+                // n=0;
+                // t = [1n]
+                // r.push([])
+                r.push([t[0][t[1]], n]);
+                console.error({
+                    title: '绑定上下文:',
+                    n,
+                    t,
+                });
+                console.dir({
+                    r,
+                    title: '绑定上下文',
+                    length: r.length,
+                })
+            },
+            // 66
+            function () {
+                r[r.length - 2] = r[r.length - 2] + r.pop()
+            }, ,
+            // 68
+            function () {
+                // 获取下一个指令
+                var _t = e[f++];
+                // 10进制转ascii码
+                var __t = String.fromCharCode(_t);
+
+                r[r.length - 1] += __t;
+                console.error({
+                    title: "拼接字符串:",
+                    _t,
+                    __t,
+                    f,
+                    '堆栈长度': r.length,
+                });
+            }
+        ];
+
+
         // for (0; ;)
         for (; ;)
             try {
-                // for (var p = !1; !p;)
-                console.dir({
+                console.error({
                     title: 'try',
-                    r,
+                    r: r.toString(),
                     u,
                     length: u.length,
                 });
                 for (var p = false; !p;) {
-                    p = u[e[f++]]();
+                    let code = e[f++];
                     console.dir({
                         title: 'try for',
+                        p,
+                        f,
+                        e,
+                        code,
+                        u,
                         r,
                     });
+                    console.log(r.toString());
+                    // 执行指令
+                    p = u[code]();
                 }
                 if (0, o) {
                     throw o;
                 }
                 const t = n ? (r.pop(), r.slice(3 + __TENCENT_CHAOS_VM.v)) : r.pop();
-                console.error(`t:${t}`);
+                console.error({
+                    title: 't',
+                    t,
+                });
                 return t;
             } catch (i) {
-                console.log('catch');
+                console.error({
+                    title: 'catch error',
+                    i,
+                })
                 // 0;
                 var h = t.pop();
                 if (h === undefined) {
                     throw i;
                 }
-                o = i, f = h[0], r.length = h[1], h[2] && (r[h[2]][0] = o)
+                o = i;
+                f = h[0];
+                r.length = h[1], h[2] && (r[h[2]][0] = o);
             }
     }
     __TENCENT_CHAOS_VM.v = 0;
+    // __TENCENT_CHAOS_VM(38, e, c, [[this], [arguments], [i], [arguments[0]]], l, g, s, a);
+    // {"c":"CA1807EB","a":[1037027,1281649,5382882,9502615,7143477,3963635,1508435,7953927,7482995,4339296,8244577,8544574],"t":"000013030100000291524EB80D923B0D"}
     return __TENCENT_CHAOS_VM(
-        0,
+        38,
         [
             33, 3, 25, 2, 16, 68,
             119, 68, 105, 68, 110, 68,
@@ -322,8 +488,14 @@ var __TENCENT_CHAOS_STACK = function () {
             50, 68, 53, 68, 57, 68, 55, 52, 1, 15, 41, 31, 0, 16, 68, 112, 68, 97, 68, 114, 68, 115, 68, 101, 68, 73, 68, 110, 68, 116, 45, 53, 4, 52, 1, 7, 5,
             7, 63, 4, 3, 38, 0, 1, 3, 8, 31, 0, 5, 7, 37, 37
         ],
-        window
-    )
+        window,
+        [
+            [window],
+            [[{ "c": "CA1807EB", "a": [1037027, 1281649, 5382882, 9502615, 7143477, 3963635, 1508435, 7953927, 7482995, 4339296, 8244577, 8544574], "t": "000013030100000291524EB80D923B0D" }]],
+            [],
+            [{ "c": "CA1807EB", "a": [1037027, 1281649, 5382882, 9502615, 7143477, 3963635, 1508435, 7953927, 7482995, 4339296, 8244577, 8544574], "t": "000013030100000291524EB80D923B0D" }],
+        ],
+    );
 }();
 __TENCENT_CHAOS_STACK.g = function () {
     return __TENCENT_CHAOS_STACK.shift()[0]

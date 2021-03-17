@@ -59,9 +59,11 @@ async function getUrl() {
     });
 }
 
-while ([]) {
-    await getScore();
-}
+// while ([]) {
+    // await getScore();
+// }
+await getScore();
+
 async function getScore() {
     const u = await getUrl();
     console.error(u);
